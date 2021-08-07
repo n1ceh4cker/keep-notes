@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Keep Notes",
+    "slug": "keep-notes",
+    "version": "1.0.0",
+    "githubUrl": "https://github.com/n1ceh4cker/keep-notes",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "privacy": "public",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.niceakhtar.keepnotes"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
