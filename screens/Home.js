@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Colors, FAB, Searchbar, Snackbar } from 'react-native-paper';
+import { Colors, FAB, Searchbar, Snackbar, useTheme } from 'react-native-paper';
 import NoteCard from '../components/NoteCard';
 import { NoteContext } from '../context/NoteContext';
 
 function HomeScreen({ navigation, route }) {
   const  label  = route.params?.label
   const deleted = route.params?.deleted ? true : false
-  const [visible, setVisible] = useState(route.params?.visible ? true: false)
+  const [visible, setVisible] = useState(route.params?.visible ? true : false)
+  const theme = useTheme()
   return (
     <NoteContext.Consumer>{(context) => {
       const { notes } = context
       return(
-        <View style={styles.page}>
+        <View style={styles(theme).page}>
         <Searchbar
           icon='menu'
           onIconPress={navigation.toggleDrawer}
@@ -34,7 +35,7 @@ function HomeScreen({ navigation, route }) {
         {
           !deleted&&
           <FAB
-            style={styles.fab}
+            style={styles(theme).fab}
             icon='plus'
             onPress={() => navigation.navigate('CreateNote')}
             />
@@ -42,7 +43,7 @@ function HomeScreen({ navigation, route }) {
         <Snackbar
           visible={visible} 
           onDismiss={() => setVisible(false)}
-          style={styles.snackbar}
+          style={styles(theme).snackbar}
           >
           Empty Note Discarded
         </Snackbar>
@@ -51,10 +52,10 @@ function HomeScreen({ navigation, route }) {
     </NoteContext.Consumer>
   )
 }
-const styles = StyleSheet.create({
+const styles = theme => StyleSheet.create({
     page: {
       flex: 1,
-      backgroundColor: Colors.white
+      backgroundColor: theme.colors.background
     },
 		snackbar: {
 			position: 'absolute',

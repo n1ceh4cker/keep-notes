@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { View } from 'react-native';
-import { TextInput, List, IconButton } from 'react-native-paper';
+import { TextInput, List, IconButton, useTheme } from 'react-native-paper';
 import { NoteContext } from '../context/NoteContext';
 
 function CreateLabel({ hideModal }) {
   const [label, setLabel] = useState('')
   const [focused, setFocused] = useState(false)
+  const theme = useTheme()
   const textInputRef = useRef(null)
   return (
     <NoteContext.Consumer>{(context) => {
@@ -35,8 +36,8 @@ function CreateLabel({ hideModal }) {
             placeholder='Create new label'
             value={label}
             onChangeText={(e) => setLabel(e)}
-            underlineColor= '#ffffff'
-            style={{ backgroundColor: '#ffffff' }}
+            underlineColor= {theme.colors.background}
+            style={{ backgroundColor: theme.colors.background }}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
             left={leftIcon}

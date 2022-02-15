@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer'
 import { createStackNavigator } from '@react-navigation/stack'
 import { StyleSheet } from 'react-native'
-import { Colors, Drawer, Modal, Portal } from 'react-native-paper'
+import { Colors, Drawer, Modal, Portal, useTheme } from 'react-native-paper'
 import { NoteContext } from '../context/NoteContext'
 import HomeScreen from '../screens/Home'
 import CreateLabel from '../screens/CreateLabel'
@@ -12,10 +12,11 @@ const StackNav = createStackNavigator()
 const DrawerNav = createDrawerNavigator()
 const CustomDrawer = ({ props, navigation, state }) => {
   const [visible, setVisible] = useState(false)
+  const theme = useTheme()
 	const showModal = () => {setVisible(true); navigation.closeDrawer()}
 	const hideModal = () => {setVisible(false)}
     return(
-      <DrawerContentScrollView {...props} >
+      <DrawerContentScrollView {...props} contentContainerStyle={styles(theme).drawerContent}>
         <Drawer.Section title='Note App'>
           <Drawer.Item
             label='Home'
@@ -53,7 +54,7 @@ const CustomDrawer = ({ props, navigation, state }) => {
         </Drawer.Section>
         <Portal>
           <Modal 
-            style={styles.modal}
+            style={styles(theme).modal}
             visible={visible} 
             onDismiss={hideModal} 
             
@@ -102,12 +103,16 @@ function Navigation() {
     </DrawerNav.Navigator>
   )
 }
-const styles = StyleSheet.create({
+const styles = theme => StyleSheet.create({
     modal: {
       marginTop:0,
       flex: 1,
       justifyContent: 'flex-start',
-      backgroundColor: Colors.white
+      backgroundColor: theme.colors.background
+    },
+    drawerContent: {
+        flex: 1,
+        backgroundColor: theme.colors.background
     }
 })
 export default Navigation

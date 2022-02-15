@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { TextInput, IconButton, Modal, Portal, Checkbox, Colors} from 'react-native-paper';
+import { useEffect } from 'react';
+import { BackHandler, StyleSheet, View } from 'react-native';
+import { TextInput, IconButton, Modal, Portal, Checkbox, Colors, useTheme} from 'react-native-paper';
 import { NoteContext } from '../context/NoteContext';
 
-function CreateNote({ showSnackbar, navigation, route }) {
+function CreateNote({ navigation, route }) {
   const note = route.params?.note
   const deleted = route.params?.deleted
   const context = useContext(NoteContext)
@@ -13,6 +14,16 @@ function CreateNote({ showSnackbar, navigation, route }) {
   const [visible, setVisible] = useState(false)
   const { addNote, editNote, deleteNote, deleteNoteForever, restoreNote } = context
   const userLabels = context.labels     
+  const theme = useTheme()
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress)
+    return backHandler.remove
+  })
+  const handleBackPress = () => {
+    if (visible) setVisible(false)
+    else handleSubmit()
+    return true
+  }
   const handleSubmit = () => {
     if(title=='' && content==''){
       navigation.navigate({
@@ -20,7 +31,6 @@ function CreateNote({ showSnackbar, navigation, route }) {
         params: { visible: true },
         merge: true
       })
-      //showSnackbar()
     }
     else{
       note ? 
@@ -34,8 +44,8 @@ function CreateNote({ showSnackbar, navigation, route }) {
       setLabels(labels.filter(l => l!==lbl)):setLabels([...labels,lbl])
     }
   return(
-    <View style={styles.page}>
-      <View style={styles.row}>
+    <View style={styles(theme).page}>
+      <View style={styles(theme).row}>
         {!deleted?
         (<>
           <IconButton
@@ -72,8 +82,8 @@ function CreateNote({ showSnackbar, navigation, route }) {
         value={title}
         onChangeText={(e) => setTitle(e)}
         multiline
-        underlineColor= '#ffffff'
-        style={{ backgroundColor: '#ffffff' }}
+        underlineColor= {theme.colors.background}
+        style={{ backgroundColor: theme.colors.background }}
         editable={!deleted}
         />
       <TextInput
@@ -81,15 +91,15 @@ function CreateNote({ showSnackbar, navigation, route }) {
         value={content}
         onChangeText={(e) => setContent(e)}
         multiline
-        underlineColor= '#ffffff'
-        style={{ backgroundColor: '#ffffff', flexGrow:1 }}
+        underlineColor= {theme.colors.background}
+        style={{ backgroundColor: theme.colors.background, flexGrow:1 }}
         editable={!deleted}
         />
       <Portal>
         <Modal
           visible={visible}
           onDismiss={() => setVisible(false)}
-          style={styles.modal}
+          style={styles(theme).modal}
           >
           <IconButton
             icon='keyboard-backspace'
@@ -109,10 +119,10 @@ function CreateNote({ showSnackbar, navigation, route }) {
   </View>
   )
 }
-const styles = StyleSheet.create({
+const styles = theme => StyleSheet.create({
   page: {
     flex: 1,
-    backgroundColor: Colors.white
+    backgroundColor: theme.colors.background
   },
   row: { 
     display: 'flex', 
@@ -122,7 +132,7 @@ const styles = StyleSheet.create({
     marginTop:0,
     flex: 1,
     justifyContent: 'flex-start',
-    backgroundColor: Colors.white
+    backgroundColor: theme.colors.background
   }
 })
 export default CreateNote

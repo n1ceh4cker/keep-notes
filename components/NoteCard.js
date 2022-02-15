@@ -13,7 +13,7 @@ function NoteCard({ note, edit }) {
         <Paragraph>
           {note.content}
         </Paragraph>
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
+        <View style={{ display: 'flex', flexDirection: 'row', marginTop: 10, marginBottom: -10 }}>
         {note.labels ? note.labels.map(label =>  <Chip key={label}>{label}</Chip>):null}
         </View>
       </Card.Content>
